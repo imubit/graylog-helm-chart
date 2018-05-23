@@ -1,0 +1,97 @@
+{{- $elasticsearchServiceName := include "elasticsearch.fullname" . -}}
+{{- $mongodbServiceName := include "mongodb.fullname" . -}}
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ template "graylog.slave.fullname" . }}
+  labels:
+    app: {{ template "graylog.name" . }}
+    chart: {{ template "graylog.chart" . }}
+    component: graylog-slave
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "graylog.slave.fullname" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        graylog: "true"
+        app: {{ template "graylog.name" . }}
+        component: graylog-slave
+        release: {{ .Release.Name }}
+    spec:
+      terminationGracePeriodSeconds: 70
+      affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - graylog-master
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: graylog-slave
+          image: "graylog2/server:{{ .Values.graylog.image.tag }}"
+          env:
+          - name: GRAYLOG_PASSWORD_SECRET
+            value: {{required "A valid .Values.graylog.passwordSecret entry required!" .Values.graylog.passwordSecret }}
+          - name: GRAYLOG_ROOT_PASSWORD_SHA2
+            value: {{ .Values.graylog.passwordSecret | sha256sum }}
+          - name: GRAYLOG_MONGODB_URI
+            value: "mongodb://{{ $mongodbServiceName }}-0.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-1.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-2.{{ $mongodbServiceName }}:27017/graylog?replicaSet=rs0"
+          - name: GRAYLOG_IS_MASTER
+            value: "false"
+          - name: GRAYLOG_ELASTICSEARCH_DISCOVERY_ZEN_PING_UNICAST_HOSTS
+            value: "{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9300"
+          - name: GRAYLOG_ELASTICSEARCH_HOSTS
+            value: "http://{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9200"
+          - name: GRAYLOG_WEB_ENDPOINT_URI
+            value: "http://domain.com:31300/api"
+          - name: GRAYLOG_REST_LISTEN_URI
+            value: "http://0.0.0.0:9000/api/"
+          - name: GRAYLOG_WEB_LISTEN_URI
+            value: "http://0.0.0.0:9000/"
+          - name: GRAYLOG_REST_TRANSPORT_URI
+            value: "http://graylog-slave.default.svc.cluster.local:9000/api/"
+          - name: GRAYLOG_SERVER_JAVA_OPTS
+            value: "-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+          ports:
+          - containerPort: 9000
+            name: http
+          - containerPort: 12201
+            name: udp-input
+          - containerPort: 1514
+            name: tcp-input
+          volumeMounts:
+          - name: graylog-persistent-storage
+            mountPath: /usr/share/graylog/data/journal
+            subPath: graylog
+          resources:
+            requests:
+              cpu: .25
+              memory: 1536Mi
+            limits:
+              cpu: 1.5
+              memory: 2048Mi
+          readinessProbe:
+            httpGet:
+              path: /api/system/lbstatus
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 3
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 2
+  volumeClaimTemplates:
+  - metadata:
+      name: graylog-persistent-storage
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "fast"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
