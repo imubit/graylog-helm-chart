@@ -49,7 +49,7 @@ spec:
           - name: GRAYLOG_ELASTICSEARCH_HOSTS
             value: "http://{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9200"
           - name: GRAYLOG_WEB_ENDPOINT_URI
-            value: "http://domain.com:31300/api"
+            value: "http://{{ .Release.Name }}.{{ .Values.ingress.domain }}:31300/api"
           - name: GRAYLOG_REST_LISTEN_URI
             value: "http://0.0.0.0:9000/api/"
           - name: GRAYLOG_WEB_LISTEN_URI

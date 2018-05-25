@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: graylog
+  name: {{ template "graylog.fullname" . }}
   labels:
     name: graylog
     app: {{ template "graylog.name" . }}
@@ -15,7 +15,8 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    port: 9000
+    port: {{ .Values.graylog.web.service.externalPort }}
+    targetPort: 9000
     nodePort: 31300
   - name: udp-input
     protocol: UDP
