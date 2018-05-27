@@ -1,5 +1,6 @@
 {{- $elasticsearchServiceName := include "elasticsearch.fullname" . -}}
 {{- $mongodbServiceName := include "mongodb.fullname" . -}}
+{{- $servicePath := include "graylog.slave.fullname" . -}}
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -48,14 +49,14 @@ spec:
             value: "{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9300"
           - name: GRAYLOG_ELASTICSEARCH_HOSTS
             value: "http://{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9200"
-          - name: GRAYLOG_WEB_ENDPOINT_URI
-            value: "http://{{ .Release.Name }}.{{ .Values.ingress.domain }}:31300/api"
-          - name: GRAYLOG_REST_LISTEN_URI
-            value: "http://0.0.0.0:9000/api/"
           - name: GRAYLOG_WEB_LISTEN_URI
             value: "http://0.0.0.0:9000/"
+          - name: GRAYLOG_WEB_ENDPOINT_URI
+            value: "http://{{ .Release.Name }}.{{ .Values.ingress.domain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
+          - name: GRAYLOG_REST_LISTEN_URI
+            value: "http://0.0.0.0:9000/api/"
           - name: GRAYLOG_REST_TRANSPORT_URI
-            value: "http://graylog-master.default.svc.cluster.local:9000/api/"
+            value: "http://{{ $servicePath }}:9000/api/"
           - name: GRAYLOG_SERVER_JAVA_OPTS
             value: "-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
           ports:
