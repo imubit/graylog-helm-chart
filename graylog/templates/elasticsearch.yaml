@@ -55,12 +55,7 @@ spec:
           - name: elasticsearch-persistent-storage
             mountPath: /usr/share/elasticsearch/data
           resources:
-            requests:
-              cpu: .10
-              memory: 2560Mi
-            limits:
-              cpu: .75
-              memory: 3072Mi
+{{ toYaml .Values.elasticsearch.containers.resources | indent 12 }}
   volumeClaimTemplates:
   - metadata:
       name: elasticsearch-persistent-storage
@@ -69,5 +64,4 @@ spec:
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
-        requests:
-          storage: 200Gi
+{{ toYaml .Values.elasticsearch.volumeClaimTemplates.resources | indent 8 }}

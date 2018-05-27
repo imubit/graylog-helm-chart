@@ -51,6 +51,20 @@ mongodbReplicaset:
 elasticsearch:
   name: elasticsearch
 
+  containers:
+    resources:
+      requests:
+        cpu: .10
+        memory: 2560Mi
+      limits:
+        cpu: .75
+        memory: 3072Mi
+
+  volumeClaimTemplates:
+    resources:
+      requests:
+        storage: 100Gi
+
 
 graylog:
   passwordSecret: {}

@@ -50,17 +50,17 @@ spec:
           - name: GRAYLOG_ELASTICSEARCH_HOSTS
             value: "http://{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9200"
           - name: GRAYLOG_WEB_LISTEN_URI
-            value: "http://0.0.0.0:9000/"
+            value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/"
           - name: GRAYLOG_WEB_ENDPOINT_URI
             value: "http://{{ .Release.Name }}.{{ .Values.ingress.domain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
           - name: GRAYLOG_REST_LISTEN_URI
-            value: "http://0.0.0.0:9000/api/"
+            value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_REST_TRANSPORT_URI
-            value: "http://{{ $servicePath }}:9000/api/"
+            value: "http://{{ $servicePath }}:{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_SERVER_JAVA_OPTS
             value: "-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
           ports:
-          - containerPort: 9000
+          - containerPort: {{ .Values.graylog.web.service.internalPort }}
             name: http
           - containerPort: 12201
             name: udp-input
@@ -80,7 +80,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /api/system/lbstatus
-              port: 9000
+              port: {{ .Values.graylog.web.service.internalPort }}
             initialDelaySeconds: 30
             periodSeconds: 3
             timeoutSeconds: 3

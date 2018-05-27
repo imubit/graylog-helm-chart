@@ -17,5 +17,5 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    port: 9000
+    port: {{ .Values.graylog.web.service.internalPort }}
   clusterIP: None

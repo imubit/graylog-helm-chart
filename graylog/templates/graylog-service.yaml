@@ -16,7 +16,7 @@ spec:
   - name: http
     protocol: TCP
     port: {{ .Values.graylog.web.service.externalPort }}
-    targetPort: 9000
+    targetPort: {{ .Values.graylog.web.service.internalPort }}
     nodePort: 31300
   - name: udp-input
     protocol: UDP
