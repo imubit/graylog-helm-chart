@@ -24,7 +24,27 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+{{/*
+External domain
+*/}}
+{{- define "graylog.ingress.externalDomain" -}}
+{{- if .Values.ingress.proxyDomain -}}
+{{- .Values.ingress.proxyDomain -}}
+{{- else -}}
+{{- .Values.ingress.domain -}}
+{{- end -}}
+{{- end -}}
 
+{{/*
+External protocol
+*/}}
+{{- define "graylog.ingress.externalProtocol" -}}
+{{- if .Values.ingress.proxyDomain -}}
+{{- .Values.ingress.proxyProtocol -}}
+{{- else -}}
+{{- .Values.ingress.protocol -}}
+{{- end -}}
+{{- end -}}
 {{/*
 Create a default fully qualified graylog master name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).

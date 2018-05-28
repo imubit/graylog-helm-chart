@@ -1,6 +1,8 @@
 {{- $elasticsearchServiceName := include "elasticsearch.fullname" . -}}
 {{- $mongodbServiceName := include "mongodb.fullname" . -}}
 {{- $servicePath := include "graylog.slave.fullname" . -}}
+{{- $externalDomain := include "graylog.ingress.externalDomain" . -}}
+{{- $externalProtocol := include "graylog.ingress.externalProtocol" . -}}
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -42,7 +44,7 @@ spec:
           - name: GRAYLOG_WEB_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/"
           - name: GRAYLOG_WEB_ENDPOINT_URI
-            value: "http://{{ .Release.Name }}.{{ .Values.ingress.domain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
+            value: "{{ $externalProtocol }}://{{ .Release.Name }}.{{ $externalDomain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
           - name: GRAYLOG_REST_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_REST_TRANSPORT_URI

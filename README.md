@@ -24,5 +24,13 @@ $ helm install --name logs .  --set graylog.passwordSecret=<16+ CHARS PASSWORD> 
 
 The application will be accessible via `http://logs.example.com`
 
+
+
+To install the chart when working with reverse proxy
+
+```bash
+$ helm install --name logs .  --set graylog.passwordSecret=<16+ CHARS PASSWORD> --set ingress.domain=example.com --namespace=monitoring --set ingress.proxyDomain=<EXTERNAL DOMAIN>
+```
+
 ## Configuration
 
