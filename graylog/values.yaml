@@ -1,35 +1,5 @@
 
 
-
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-
-
-
-
-service:
-  type: ClusterIP
-  port: 80
-
-
-
 ingress:
   name: ingress
   enabled: true
@@ -37,7 +7,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   path: /
-  domain: "example.com"
+  domain:
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -67,18 +37,60 @@ elasticsearch:
 
 
 graylog:
-  passwordSecret: {}
+  passwordSecret:
 
   web:
     service:
       externalPort: 80
       internalPort: 9000
 
-
   image:
     tag: 2.4.4-1
 
   master:
     name: master
+    replicaCount: 1
+
+    affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: component
+                operator: In
+                values:
+                - graylog-slave
+            topologyKey: kubernetes.io/hostname
+
+    containers:
+      resources:
+        requests:
+          cpu: .25
+          memory: 1536Mi
+        limits:
+          cpu: 1.5
+          memory: 2048Mi
+
   slave:
     name: slave
+    replicaCount: 1
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: component
+              operator: In
+              values:
+              - graylog-master
+          topologyKey: kubernetes.io/hostname
+
+    containers:
+      resources:
+        requests:
+          cpu: .25
+          memory: 1536Mi
+        limits:
+          cpu: 1.5
+          memory: 2048Mi

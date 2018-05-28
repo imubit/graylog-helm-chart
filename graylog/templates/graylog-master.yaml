@@ -13,7 +13,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "graylog.master.fullname" . }}
-  replicas: 1
+  replicas: {{ .Values.graylog.master.replicaCount }}
   template:
     metadata:
       labels:
@@ -71,12 +71,7 @@ spec:
             mountPath: /usr/share/graylog/data/journal
             subPath: graylog
           resources:
-            requests:
-              cpu: .25
-              memory: 1536Mi
-            limits:
-              cpu: 1.5
-              memory: 2048Mi
+{{ toYaml .Values.graylog.master.containers.resources | indent 12 }}
           readinessProbe:
             httpGet:
               path: /api/system/lbstatus
@@ -86,6 +81,10 @@ spec:
             timeoutSeconds: 3
             successThreshold: 1
             failureThreshold: 4
+    {{- with .Values.graylog.master.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: graylog-persistent-storage

@@ -27,7 +27,7 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-    - host: {{ .Release.Name }}.{{ .Values.ingress.domain }}
+    - host: {{ .Release.Name }}.{{required "A valid .Values.ingress.domain entry required!" .Values.ingress.domain }}
       http:
         paths:
           - path: {{ $ingressPath }}
