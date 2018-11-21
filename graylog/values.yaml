@@ -23,24 +23,31 @@ mongodbReplicaset:
 
 elasticsearch:
   name: elasticsearch
+  
+  image:
+    repository: "docker.elastic.co/elasticsearch/elasticsearch"
+    tag: "5.6.4"
 
-  containers:
-    resources:
-      requests:
-        cpu: .10
-        memory: 2560Mi
-      limits:
-        cpu: .75
-        memory: 3072Mi
+  cluster:
+    xpackEnable: false
+    env:
+      xpack.security.enabled: 'false'
+      XPACK_MONITORING_ENABLED: 'false'
 
-  volumeClaimTemplates:
-    resources:
-      requests:
-        storage: 100Gi
+  master:
+    persistence:
+      size: "4Gi"
+      storageClass: "gp2"
 
+  data:
+    persistence:
+      size: "500Gi"
+      storageClass: "st1"
 
 graylog:
   passwordSecret:
+  
+  storageClass: "gp2"
 
   web:
     service:
