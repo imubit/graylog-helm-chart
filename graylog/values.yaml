@@ -17,6 +17,7 @@ ingress:
   protocol: http
   domain:
 #  proxyDomain:
+  externalProtocol: https
   proxyProtocol: https
   tls: []
   #  - secretName: chart-example-tls
