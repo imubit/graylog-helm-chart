@@ -5,7 +5,7 @@ ingress:
   enabled: true
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    # alb.ingress.kubernetes.io/subnets: subnet-010f41fc189d889dc,subnet-063092fee4e15bca8,subnet-0d271b6dc2e024b3d
+    # Should be unneccessary with properly tagged subnets: alb.ingress.kubernetes.io/subnets: subnet-010f41fc189d889dc,subnet-063092fee4e15bca8,subnet-0d271b6dc2e024b3d
     alb.ingress.kubernetes.io/tags: Environment=demo # TODO: Just an example
     kubernetes.io/ingress.class: alb
     # kubernetes.io/ingress.class: nginx
