@@ -30,8 +30,8 @@ spec:
     - host: {{ .Release.Name }}.{{required "A valid .Values.ingress.domain entry required!" .Values.ingress.domain }}
       http:
         paths:
-          - path: {{ $ingressPath }}
-            backend:
+          - backend:
               serviceName: {{ $fullName }}
               servicePort: http
+            # path: {{ $ingressPath }}
 {{- end }}
