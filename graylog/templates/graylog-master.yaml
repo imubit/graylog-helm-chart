@@ -37,10 +37,21 @@ spec:
                   values:
                   - graylog-slave
               topologyKey: kubernetes.io/hostname
+      initContainers:
+        - name: init-mongodb-replicaset
+          image: busybox
+          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-mongodb-replicaset; do echo waiting for {{ .Release.Name }}-mongodb-replicaset; sleep 2; done;']
+        - name: init-elasticsearch-client
+          image: busybox
+          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-elasticsearch-client; do echo waiting for {{ .Release.Name }}-elasticsearch-client; sleep 2; done;']
       containers:
         - name: graylog-master
           image: "graylog/graylog:{{ .Values.graylog.image.tag }}"
           env:
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
           - name: GRAYLOG_PASSWORD_SECRET
             value: {{required "A valid .Values.graylog.passwordSecret entry required!" .Values.graylog.passwordSecret }}
           - name: GRAYLOG_ROOT_PASSWORD_SHA2
@@ -57,8 +68,10 @@ spec:
             value: "{{ $externalProtocol }}://{{ .Release.Name }}.{{ $externalDomain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
           - name: GRAYLOG_REST_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/api/"
+          #- name: GRAYLOG_REST_TRANSPORT_URI
+          #  value: "http://{{ $servicePath }}:{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_REST_TRANSPORT_URI
-            value: "http://{{ $servicePath }}:{{ .Values.graylog.web.service.internalPort }}/api/"
+            value: "http://$(MY_POD_IP):{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_SERVER_JAVA_OPTS
             value: "-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
           ports:
