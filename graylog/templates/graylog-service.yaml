@@ -17,13 +17,13 @@ spec:
     protocol: TCP
     port: {{ .Values.graylog.web.service.externalPort }}
     targetPort: {{ .Values.graylog.web.service.internalPort }}
-    nodePort: 31300
-  - name: udp-input
-    protocol: UDP
-    port: 12201
-    nodePort: 31301
+    #nodePort: 31300
+  #- name: udp-input
+  #  protocol: UDP
+  #  port: 12201
+  #  nodePort: 31301
   - name: tcp-input
     protocol: TCP
     port: 1514
-    nodePort: 31302
-  type: NodePort
+    #nodePort: 31302
+  type: LoadBalancer
