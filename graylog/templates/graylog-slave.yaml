@@ -37,10 +37,8 @@ spec:
             value: "mongodb://{{ $mongodbServiceName }}-0.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-1.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-2.{{ $mongodbServiceName }}:27017/graylog?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER
             value: "false"
-          #- name: GRAYLOG_ELASTICSEARCH_DISCOVERY_ZEN_PING_UNICAST_HOSTS
-          #  value: "{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9300, {{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9300"
-          #- name: GRAYLOG_ELASTICSEARCH_HOSTS
-          #  value: "http://{{ $elasticsearchServiceName }}-0.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-1.{{ $elasticsearchServiceName }}:9200, http://{{ $elasticsearchServiceName }}-2.{{ $elasticsearchServiceName }}:9200"
+          - name: GRAYLOG_ELASTICSEARCH_HOSTS
+            value: "http://{{ .Release.Name }}-elasticsearch-client:9200"
           - name: GRAYLOG_WEB_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/"
           - name: GRAYLOG_WEB_ENDPOINT_URI
