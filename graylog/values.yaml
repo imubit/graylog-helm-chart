@@ -65,7 +65,7 @@ graylog:
       internalPort: 9000
 
   image:
-    tag: 2.4.4-1
+    tag: 2.4.6-1
 
   master:
     name: master
@@ -93,7 +93,7 @@ graylog:
 
   slave:
     name: slave
-    replicaCount: 1
+    replicaCount: 2
 
     affinity:
       podAntiAffinity:

@@ -25,6 +25,8 @@ spec:
         release: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 70
+      updateStrategy:
+        type: "RollingUpdate"
       affinity:
           podAntiAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:

@@ -15,7 +15,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "graylog.slave.fullname" . }}
-  replicas: {{ .Values.graylog.master.replicaCount }}
+  replicas: {{ .Values.graylog.slave.replicaCount }}
   template:
     metadata:
       labels:
@@ -25,6 +25,8 @@ spec:
         release: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 70
+      updateStrategy:
+        type: "RollingUpdate"
       containers:
         - name: graylog-slave
           image: "graylog/graylog:{{ .Values.graylog.image.tag }}"
