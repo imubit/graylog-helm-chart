@@ -8,6 +8,7 @@ ingress:
     # Should be unneccessary with properly tagged subnets: alb.ingress.kubernetes.io/subnets: subnet-010f41fc189d889dc,subnet-063092fee4e15bca8,subnet-0d271b6dc2e024b3d
     alb.ingress.kubernetes.io/tags: Environment=demo # TODO: Just an example
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:001579709704:certificate/baf3150c-946b-4902-9023-673f953be075
+    external-dns.alpha.kubernetes.io/hostname=graylog.dev.aws.csservice.de.
     # TODO: something doesn't work here: alb.ingress.kubernetes.io/load-balancer-attributes:routing.http2.enabled: true
     # TODO: logging bucket: alb.ingress.kubernetes.io/load-balancer-attributes:access_logs.s3.enabled=true,access_logs.s3.bucket=my-access-log-bucket,access_logs.s3.prefix=my-app
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
