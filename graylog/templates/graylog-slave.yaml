@@ -16,6 +16,8 @@ metadata:
 spec:
   serviceName: {{ template "graylog.slave.fullname" . }}
   replicas: {{ .Values.graylog.slave.replicaCount }}
+  updateStrategy:
+    type: "RollingUpdate"
   template:
     metadata:
       labels:
@@ -25,8 +27,6 @@ spec:
         release: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 70
-      updateStrategy:
-        type: "RollingUpdate"
       initContainers:
         - name: init-mongodb-replicaset
           image: busybox
