@@ -34,6 +34,7 @@ mongodbReplicaset:
 
 elasticsearch:
   name: elasticsearch
+  appVersion: "5.6.4"
   
   image:
     repository: "docker.elastic.co/elasticsearch/elasticsearch"
@@ -51,6 +52,7 @@ elasticsearch:
       storageClass: "gp2"
 
   data:
+    replicas: 2
     persistence:
       size: "500Gi"
       storageClass: "st1"

@@ -65,11 +65,9 @@ spec:
           - name: GRAYLOG_WEB_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/"
           - name: GRAYLOG_WEB_ENDPOINT_URI
-            value: "{{ $externalProtocol }}://{{ .Release.Name }}.{{ $externalDomain }}{{ if not .Values.ingress.enabled }}:31300{{ end }}/api"
+            value: "{{ $externalProtocol }}://{{ .Release.Name }}.{{ $externalDomain }}/api"
           - name: GRAYLOG_REST_LISTEN_URI
             value: "http://0.0.0.0:{{ .Values.graylog.web.service.internalPort }}/api/"
-          #- name: GRAYLOG_REST_TRANSPORT_URI
-          #  value: "http://{{ $servicePath }}:{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_REST_TRANSPORT_URI
             value: "http://$(MY_POD_IP):{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_SERVER_JAVA_OPTS
@@ -78,9 +76,9 @@ spec:
           - containerPort: {{ .Values.graylog.web.service.internalPort }}
             name: http
           - containerPort: 12201
-            name: udp-input
+            name: gelf-input
           - containerPort: 1514
-            name: tcp-input
+            name: syslog-input
           volumeMounts:
           - name: graylog-persistent-storage
             mountPath: /usr/share/graylog/data/journal
