@@ -3,8 +3,8 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "graylog.slave.fullname" . }}
 spec:
-  maxReplicas: 3
-  minReplicas: 1
+  maxReplicas: 10
+  minReplicas: {{ .Values.graylog.slave.replicas }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: StatefulSet

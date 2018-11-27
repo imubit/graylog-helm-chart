@@ -42,7 +42,11 @@ elasticsearch:
       xpack.security.enabled: 'false'
       XPACK_MONITORING_ENABLED: 'false'
 
+  client:
+    replicas: 2
+
   master:
+    replicas: 3
     persistence:
       size: "4Gi"
       storageClass: "gp2"

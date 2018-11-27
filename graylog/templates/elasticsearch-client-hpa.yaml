@@ -1,0 +1,12 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}-elasticsearch-client
+spec:
+  maxReplicas: 10
+  minReplicas: {{ .Values.elasticsearch.client.replicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}-elasticsearch-client
+  targetCPUUtilizationPercentage: 80
