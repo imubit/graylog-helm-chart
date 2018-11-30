@@ -24,9 +24,10 @@ ingress:
   #      - chart-example.local
 
 
-mongodbReplicaset:
+mongodb-replicaset:
   name: mongodb-replicaset
-  metrics.enabled: true
+  metrics:
+    enabled: true
 
 
 elasticsearch:
