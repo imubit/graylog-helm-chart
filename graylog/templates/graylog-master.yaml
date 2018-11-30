@@ -46,7 +46,8 @@ spec:
           command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-elasticsearch-client; do echo waiting for {{ .Release.Name }}-elasticsearch-client; sleep 2; done;']
       containers:
         - name: graylog-master
-          image: "graylog/graylog:{{ .Values.graylog.image.tag }}"
+          image: "{{ .Values.graylog.image.repository }}:{{ .Values.graylog.image.tag }}"
+          imagePullPolicy: Always
           env:
           - name: MY_POD_IP
             valueFrom:

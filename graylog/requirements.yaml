@@ -5,3 +5,6 @@ dependencies:
   - name: elasticsearch
     version: 1.13.3
     repository: "https://kubernetes-charts.storage.googleapis.com/"
+  - name: elasticsearch-exporter
+    version: 0.4.1
+    repository: "https://kubernetes-charts.storage.googleapis.com/"

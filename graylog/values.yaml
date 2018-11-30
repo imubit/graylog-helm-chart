@@ -26,6 +26,7 @@ ingress:
 
 mongodbReplicaset:
   name: mongodb-replicaset
+  metrics.enabled: true
 
 
 elasticsearch:
@@ -57,7 +58,18 @@ elasticsearch:
       size: "500Gi"
       storageClass: "st1"
 
+elasticsearch-exporter:
+  es:
+    uri: "http://graylog-elasticsearch-client:9200"
+
 graylog:
+  name: graylog
+  appVersion: 2.4.6
+
+  image:
+    repository: "arvatoaws/graylog"
+    tag: "latest"
+
   passwordSecret:
   
   storageClass: "gp2"
@@ -66,9 +78,6 @@ graylog:
     service:
       externalPort: 80
       internalPort: 9000
-
-  image:
-    tag: 2.4.6-1
 
   master:
     name: master
