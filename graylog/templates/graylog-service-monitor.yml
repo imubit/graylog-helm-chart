@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: graylog-monitoring
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: graylog
+      chart: graylog-0.1.0
+      component: graylog-service
+      heritage: Tiller
+      name: graylog
+      release: graylog
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  endpoints:
+  - port: http
+    path: '/api/plugins/org.graylog.plugins.metrics.prometheus/metrics'
+    basicAuth:
+      password:
+        name: monitoring-graylog
+        key: password
+      username:
+        name: monitoring-graylog
+        key: user
+    

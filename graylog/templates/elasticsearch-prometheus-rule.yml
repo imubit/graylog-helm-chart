@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+    app: prometheus-operator
+  name: elasticsearch-up
+  namespace: monitoring
+spec:
+  groups:
+  - name: elasticsearch
+    rules:
+    - alert: elasticsearchYellowState
+      annotations:
+        description: Elasticsearch is in warning state
+        summary: Elasticsearch is in warning state
+      expr: | 
+        elasticsearch_cluster_health_status{cluster="elasticsearch",color="yellow"} == 1
+      for: 5m
+      labels:
+        severity: warning
+    - alert: elasticsearchRedState
+      annotations:
+        description: Elasticsearch is down
+        summary: Elasticsearch is down
+      expr: | 
+        elasticsearch_cluster_health_status{cluster="elasticsearch",color="red"} == 1
+      for: 5m
+      labels:
+        severity: critical

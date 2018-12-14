@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: elasticsearch
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: http
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app: elasticsearch-exporter
+      chart: elasticsearch-exporter-0.4.1
+      heritage: Tiller
+      release: graylog
