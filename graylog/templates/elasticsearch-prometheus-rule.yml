@@ -4,8 +4,7 @@ metadata:
   labels:
     release: prometheus
     app: prometheus-operator
-  name: elasticsearch-up
-  namespace: monitoring
+  name: {{ template "graylog.fullname" . }}-elasticsearch-rule
 spec:
   groups:
   - name: elasticsearch

@@ -48,7 +48,7 @@ spec:
           - name: GRAYLOG_ROOT_PASSWORD_SHA2
             value: {{ .Values.graylog.passwordSecret | sha256sum }}
           - name: GRAYLOG_MONGODB_URI
-            value: "mongodb://{{ $mongodbServiceName }}-replicaset-0.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-replicaset-1.{{ $mongodbServiceName }}:27017,{{ $mongodbServiceName }}-replicaset-2.{{ $mongodbServiceName }}:27017/graylog?replicaSet=rs0"
+            value: "mongodb://{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/graylog?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER
             value: "false"
           - name: GRAYLOG_ELASTICSEARCH_HOSTS

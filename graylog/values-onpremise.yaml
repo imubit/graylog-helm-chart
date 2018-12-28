@@ -4,15 +4,11 @@ ingress:
   name: ingress
   enabled: true
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/tags: Environment=demo # TODO: Just an example
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-1:001579709704:certificate/baf3150c-946b-4902-9023-673f953be075
-    external-dns.alpha.kubernetes.io/hostname: graylog.dev.aws.csservice.de.
-    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http2.enabled=true
-    # TODO: logging bucket: alb.ingress.kubernetes.io/load-balancer-attributes:access_logs.s3.enabled=true,access_logs.s3.bucket=my-access-log-bucket,access_logs.s3.prefix=my-app
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-    kubernetes.io/ingress.class: alb
+    kubernetes.io/ingress.class: nginx 
+    
+  hosts:
+    - graylog.onpremise.dev.aws.csservice.de
+
   protocol: https
   domain:
 #  proxyDomain:
@@ -23,24 +19,14 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# mongodbReplicaset:
-#   name: mongodb
-#   metrics:
-#     enabled: true
-
-
-mongodb:
+mongodbReplicaset:
   name: mongodb
-  usePassword: false
+
+mongodb-replicaset:
+  name: mongodb
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
-      additionalLabels: 
-        release: prometheus
 
-  replicaSet:
-    enabled: true
 
 elasticsearch:
   name: elasticsearch
@@ -63,13 +49,13 @@ elasticsearch:
     replicas: 3
     persistence:
       size: "4Gi"
-      storageClass: "gp2"
+      storageClass: "standard"
 
   data:
     replicas: 2
     persistence:
       size: "500Gi"
-      storageClass: "st1"
+      storageClass: "standard"
 
 elasticsearch-exporter:
   es:
@@ -85,7 +71,7 @@ graylog:
 
   passwordSecret:
   
-  storageClass: "gp2"
+  storageClass: "standard"
 
   web:
     service:

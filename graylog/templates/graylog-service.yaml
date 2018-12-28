@@ -6,7 +6,7 @@ metadata:
     name: graylog
     app: {{ template "graylog.name" . }}
     chart: {{ template "graylog.chart" . }}
-    component: graylog-service
+    component: graylog-service-{{ .Release.Name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:

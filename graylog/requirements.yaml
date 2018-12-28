@@ -1,6 +1,6 @@
 dependencies:
-  - name: mongodb-replicaset
-    version: 3.7.0
+  - name: mongodb
+    version: 5.0.0
     repository: "https://kubernetes-charts.storage.googleapis.com/"
   - name: elasticsearch
     version: 1.13.3

@@ -40,7 +40,7 @@ spec:
       initContainers:
         - name: init-mongodb-replicaset
           image: busybox
-          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-mongodb-replicaset; do echo waiting for {{ .Release.Name }}-mongodb-replicaset; sleep 2; done;']
+          command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-mongodb; do echo waiting for {{ .Release.Name }}-mongodb; sleep 2; done;']
         - name: init-elasticsearch-client
           image: busybox
           command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-elasticsearch-client; do echo waiting for {{ .Release.Name }}-elasticsearch-client; sleep 2; done;']
@@ -58,7 +58,7 @@ spec:
           - name: GRAYLOG_ROOT_PASSWORD_SHA2
             value: {{ .Values.graylog.passwordSecret | sha256sum }}
           - name: GRAYLOG_MONGODB_URI
-            value: "mongodb://{{ $mongodbServiceName }}-replicaset-0.{{ $mongodbServiceName }}-replicaset:27017,{{ $mongodbServiceName }}-replicaset-1.{{ $mongodbServiceName }}-replicaset:27017,{{ $mongodbServiceName }}-replicaset-2.{{ $mongodbServiceName }}-replicaset:27017/graylog?replicaSet=rs0"
+            value: "mongodb://{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/graylog?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER
             value: "true"
           - name: GRAYLOG_ELASTICSEARCH_HOSTS

@@ -3,28 +3,28 @@ kind: ServiceMonitor
 metadata:
   labels:
     release: prometheus
-  name: graylog-monitoring
-  namespace: monitoring
+  name: {{ template "graylog.fullname" . }}
 spec:
+  jobLabel: {{ template "graylog.fullname" . }}
   selector:
     matchLabels:
-      app: graylog
-      chart: graylog-0.1.0
-      component: graylog-service
-      heritage: Tiller
-      name: graylog
-      release: graylog
+      name: graylog-service
+      app: {{ template "graylog.name" . }}
+      chart: {{ template "graylog.chart" . }}
+      component: graylog-service-{{ .Release.Name }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
   namespaceSelector:
     matchNames:
-    - monitoring
+    - "{{ $.Release.Namespace }}"
   endpoints:
   - port: http
     path: '/api/plugins/org.graylog.plugins.metrics.prometheus/metrics'
     basicAuth:
       password:
-        name: monitoring-graylog
+        name: {{ template "graylog.master.fullname" . }}
         key: password
       username:
-        name: monitoring-graylog
+        name: {{ template "graylog.master.fullname" . }}
         key: user
     
