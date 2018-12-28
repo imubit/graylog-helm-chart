@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: {{ template "graylog.fullname" . }}-elasticsearch
+spec:
+  endpoints:
+  - port: http
+  namespaceSelector:
+    matchNames:
+    - "{{ $.Release.Namespace }}"
+  selector:
+    matchLabels:
+      chart: {{ template "elasticsearch-exporter.chart" . }}
+      app: {{ template "elasticsearch-exporter.name" . }}
+      release: "{{ .Release.Name }}"
+      heritage: "{{ .Release.Service }}"

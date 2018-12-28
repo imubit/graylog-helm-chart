@@ -6,7 +6,7 @@ metadata:
     name: graylog
     app: {{ template "graylog.name" . }}
     chart: {{ template "graylog.chart" . }}
-    component: graylog-service
+    component: graylog-service-{{ .Release.Name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -17,13 +17,12 @@ spec:
     protocol: TCP
     port: {{ .Values.graylog.web.service.externalPort }}
     targetPort: {{ .Values.graylog.web.service.internalPort }}
-    nodePort: 31300
-  - name: udp-input
-    protocol: UDP
+  - name: gelf-tcp-input
+    protocol: TCP
     port: 12201
-    nodePort: 31301
-  - name: tcp-input
+    targetPort: 12201
+  - name: syslog-tcp-input
     protocol: TCP
     port: 1514
-    nodePort: 31302
+    targetPort: 1514
   type: NodePort

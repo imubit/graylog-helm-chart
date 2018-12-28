@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: prometheus
+  name: {{ template "graylog.fullname" . }}
+spec:
+  jobLabel: {{ template "graylog.fullname" . }}
+  selector:
+    matchLabels:
+      name: graylog-service
+      app: {{ template "graylog.name" . }}
+      chart: {{ template "graylog.chart" . }}
+      component: graylog-service-{{ .Release.Name }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+  namespaceSelector:
+    matchNames:
+    - "{{ $.Release.Namespace }}"
+  endpoints:
+  - port: http
+    path: '/api/plugins/org.graylog.plugins.metrics.prometheus/metrics'
+    basicAuth:
+      password:
+        name: {{ template "graylog.master.fullname" . }}
+        key: password
+      username:
+        name: {{ template "graylog.master.fullname" . }}
+        key: user
+    

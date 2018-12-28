@@ -1,0 +1,12 @@
+dependencies:
+- name: mongodb
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 5.0.0
+- name: elasticsearch
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.13.3
+- name: elasticsearch-exporter
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 0.4.1
+digest: sha256:cbc0327339d60ee32d998d38b689c8a1bf7d8a314191ffb13da3e704a086eb40
+generated: 2018-12-20T15:01:35.487789174Z
