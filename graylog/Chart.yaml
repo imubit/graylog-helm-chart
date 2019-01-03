@@ -4,9 +4,9 @@ description: A Graylog2 Helm chart for Kubernetes
 name: graylog
 version: 0.1.0
 appVersion: 2.4.4
-home: https://github.com/imubit/graylog-helm-chart
+home: https://github.com/arvatoaws/graylog-helm-chart
 sources:
-  - https://github.com/imubit/graylog-helm-chart
+  - https://github.com/arvatoaws/graylog-helm-chart
 maintainers:
-  - name: Meir Tseitlin
-    email: info@imubit.com
+  - name: Philipp Hellmich
+    email: philipp.hellmich@bertelsmann.de
