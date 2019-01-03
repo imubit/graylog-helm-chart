@@ -64,7 +64,7 @@ graylog:
     repository: "arvatoaws/graylog"
     tag: "latest"
 
-  passwordSecret:
+#  passwordSecret:
   
   storageClass: "gp2"
   storageSize: "10Gi"

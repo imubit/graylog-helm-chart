@@ -54,9 +54,15 @@ spec:
               fieldRef:
                 fieldPath: status.podIP
           - name: GRAYLOG_PASSWORD_SECRET
-            value: {{required "A valid .Values.graylog.passwordSecret entry required!" .Values.graylog.passwordSecret }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "graylog.master.fullname" . }}
+                key: password-secret
           - name: GRAYLOG_ROOT_PASSWORD_SHA2
-            value: {{ .Values.graylog.passwordSecret | sha256sum }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "graylog.master.fullname" . }}
+                key: admin-password-sha256sum
           - name: GRAYLOG_MONGODB_URI
             value: "mongodb://{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/graylog?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER

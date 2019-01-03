@@ -1,9 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
+  name: {{ template "graylog.fullname" . }}
   labels:
     release: prometheus
-  name: {{ template "graylog.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"  
 spec:
   jobLabel: {{ template "graylog.fullname" . }}
   selector:
@@ -23,8 +26,8 @@ spec:
     basicAuth:
       password:
         name: {{ template "graylog.master.fullname" . }}
-        key: password
+        key: admin-password
       username:
         name: {{ template "graylog.master.fullname" . }}
-        key: user
+        key: admin-user
     
