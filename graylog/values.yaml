@@ -12,7 +12,10 @@ ingress:
 
 mongodb:
   name: mongodb
-  usePassword: false
+  usePassword: true
+  mongodbDatabase: graylog
+  mongodbUsername: graylog
+  mongodbPassword: secret
   metrics:
     enabled: true
     serviceMonitor:

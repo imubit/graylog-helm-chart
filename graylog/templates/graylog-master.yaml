@@ -64,7 +64,7 @@ spec:
                 name: {{ template "graylog.master.fullname" . }}
                 key: admin-password-sha256sum
           - name: GRAYLOG_MONGODB_URI
-            value: "mongodb://{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/graylog?replicaSet=rs0"
+            value: "mongodb://{{ .Values.mongodb.mongodbUsername }}:{{ .Values.mongodb.mongodbPassword }}@{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/{{ .Values.mongodb.mongodbDatabase }}?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER
             value: "true"
           - name: GRAYLOG_ELASTICSEARCH_HOSTS
