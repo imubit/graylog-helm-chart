@@ -62,7 +62,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ template "graylog.master.fullname" . }}
-                key: admin-password-sha256
+                key: root-password-sha256
+          - name: GRAYLOG_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "graylog.master.fullname" . }}
+                key: root-username
           - name: GRAYLOG_MONGODB_URI
             value: "mongodb://{{ .Values.mongodb.mongodbUsername }}:{{ .Values.mongodb.mongodbPassword }}@{{ $mongodbServiceName }}-mongodb-primary-0.{{ $mongodbServiceName }}-mongodb-headless:27017,{{ $mongodbServiceName }}-mongodb-secondary-0.{{ $mongodbServiceName }}-mongodb-headless:27017/{{ .Values.mongodb.mongodbDatabase }}?replicaSet=rs0"
           - name: GRAYLOG_IS_MASTER
@@ -78,7 +83,7 @@ spec:
           - name: GRAYLOG_REST_TRANSPORT_URI
             value: "http://$(MY_POD_IP):{{ .Values.graylog.web.service.internalPort }}/api/"
           - name: GRAYLOG_SERVER_JAVA_OPTS
-            value: "-Xms1g -Xmx1g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+            value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow'"
           - name: metrics_prometheus_enabled
             value: "true"
           ports:

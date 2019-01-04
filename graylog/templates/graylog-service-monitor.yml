@@ -26,8 +26,8 @@ spec:
     basicAuth:
       password:
         name: {{ template "graylog.master.fullname" . }}
-        key: admin-password
+        key: root-password
       username:
         name: {{ template "graylog.master.fullname" . }}
-        key: admin-user
+        key: root-username
     

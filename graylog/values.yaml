@@ -1,5 +1,6 @@
 
 ingress:
+  name: graylog
   enabled: false
   annotations: {}
     # kubernetes.io/ingress.class: nginx
@@ -67,6 +68,8 @@ graylog:
     repository: "arvatoaws/graylog"
     tag: "latest"
 
+#  rootUsername: admin
+#  rootPassword:
 #  passwordSecret:
   
   storageClass: "gp2"
@@ -95,7 +98,7 @@ graylog:
     containers:
       resources:
         requests:
-          cpu: .25
+          cpu: 1
           memory: 1536Mi
         limits:
           cpu: 1.5
@@ -119,7 +122,7 @@ graylog:
     containers:
       resources:
         requests:
-          cpu: .25
+          cpu: 1
           memory: 1536Mi
         limits:
           cpu: 1.5
