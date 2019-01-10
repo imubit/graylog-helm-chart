@@ -86,9 +86,9 @@ graylog:
   appVersion: 2.4.6
   
   metrics:
-  serviceMonitor:
-    additionalLabels:
-      release: prometheus
+    serviceMonitor:
+      additionalLabels:
+        release: prometheus
       
   image:
     repository: "arvatoaws/graylog"
