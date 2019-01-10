@@ -3,10 +3,13 @@ kind: ServiceMonitor
 metadata:
   name: {{ template "graylog.fullname" . }}
   labels:
-    release: prometheus
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"  
+    app: {{ template "graylog.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    {{- if .Values.metrics.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.metrics.serviceMonitor.additionalLabels | indent 4 }}
+{{- end }}
 spec:
   jobLabel: {{ template "graylog.fullname" . }}
   selector:
