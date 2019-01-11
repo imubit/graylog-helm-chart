@@ -1,6 +1,8 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
+  labels:
+    svcmon: "{{ .Release.Name }}"-elasticsearch
   name: {{ .Release.Name }}-elasticsearch-client
 spec:
   maxReplicas: 10
