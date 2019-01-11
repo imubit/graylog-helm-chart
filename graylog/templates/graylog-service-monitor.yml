@@ -15,7 +15,6 @@ spec:
   selector:
     matchLabels:
       app: {{ template "graylog.name" . }}
-      release: {{ .Release.Name }}
   namespaceSelector:
     matchNames:
     - "{{ $.Release.Namespace }}"
