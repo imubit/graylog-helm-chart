@@ -13,7 +13,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      svcmon: {{ template "graylog.name" . }}
+      svcmon: {{ .Release.Name }}-{{ template "graylog.name" . }}
   namespaceSelector:
     matchNames:
     - "{{ $.Release.Namespace }}"
