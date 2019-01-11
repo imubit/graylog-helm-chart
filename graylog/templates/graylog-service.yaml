@@ -9,7 +9,7 @@ metadata:
     component: graylog-service-{{ .Release.Name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    svcmon: {{ template "graylog.name" . }}
+    svcmon: {{ .Release.Name }}-{{ template "graylog.name" . }}
 spec:
   selector:
     graylog: "true"
