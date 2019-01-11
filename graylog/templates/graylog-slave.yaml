@@ -8,7 +8,7 @@ kind: StatefulSet
 metadata:
   name: {{ template "graylog.slave.fullname" . }}
   labels:
-    app: {{ template "graylog.name" . }}
+    app: {{ template "graylog.name" . }}-slave
     chart: {{ template "graylog.chart" . }}
     component: graylog-slave
     release: {{ .Release.Name }}
