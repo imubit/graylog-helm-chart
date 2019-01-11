@@ -12,7 +12,4 @@ spec:
     - "{{ $.Release.Namespace }}"
   selector:
     matchLabels:
-      chart: {{ template "elasticsearch-exporter.chart" . }}
-      app: {{ template "elasticsearch-exporter.name" . }}
-      release: "{{ .Release.Name }}"
-      heritage: "{{ .Release.Service }}"
+      svcmon: "{{ .Release.Name }}"-elasticsearch
