@@ -14,12 +14,8 @@ spec:
   jobLabel: {{ template "graylog.fullname" . }}
   selector:
     matchLabels:
-      name: graylog-service
       app: {{ template "graylog.name" . }}
-      chart: {{ template "graylog.chart" . }}
-      component: graylog-service-{{ .Release.Name }}
       release: {{ .Release.Name }}
-      heritage: {{ .Release.Service }}
   namespaceSelector:
     matchNames:
     - "{{ $.Release.Namespace }}"
