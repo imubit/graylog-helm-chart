@@ -4,7 +4,7 @@ metadata:
   name: {{ template "graylog.slave.fullname" . }}
   labels:
     name: graylog-slave
-    app: {{ template "graylog.name" . }}
+    app: {{ template "graylog.name" . }}-slave
     chart: {{ template "graylog.chart" . }}
     component: graylog-slave
     release: {{ .Release.Name }}
