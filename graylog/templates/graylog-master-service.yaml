@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "graylog.master.fullname" . }}
   labels:
-    app: {{ template "graylog.name" . }}
+    app: {{ template "graylog.name" . }}-master
     chart: {{ template "graylog.chart" . }}
     component: graylog-master
     release: {{ .Release.Name }}
