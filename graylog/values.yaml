@@ -21,16 +21,19 @@ mongodb:
     enabled: true
     serviceMonitor:
       enabled: true
-      additionalLabels: 
+      additionalLabels:
         release: prometheus
 
   replicaSet:
     enabled: true
+    replicas:
+      secondary: "2"
+      arbiter: "0"
 
 elasticsearch:
   name: elasticsearch
   appVersion: "5.6.4"
-  
+
   image:
     repository: "docker.elastic.co/elasticsearch/elasticsearch"
     tag: "5.6.4"
@@ -63,7 +66,7 @@ elasticsearch:
       requests:
         cpu: "256m"
         memory: "512Mi"
-        
+
   data:
     replicas: 2
     persistence:
@@ -84,12 +87,12 @@ elasticsearch-exporter:
 graylog:
   name: graylog
   appVersion: 2.4.6
-  
+
   metrics:
     serviceMonitor:
       additionalLabels:
         release: prometheus
-      
+
   image:
     repository: "arvatoaws/graylog"
     tag: "latest"
@@ -97,7 +100,7 @@ graylog:
 #  rootUsername: admin
 #  rootPassword:
 #  passwordSecret:
-  
+
   storageClass: "gp2"
   storageSize: "10Gi"
 
@@ -153,4 +156,3 @@ graylog:
         limits:
           cpu: 1.5
           memory: 2048Mi
-
